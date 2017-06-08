@@ -85,7 +85,7 @@ def dataValida(data):
   else:
     return False    
 """
-
+"""
 import string
 def prioridadeValida(pri):
   if len(pri) != 3:
@@ -104,6 +104,7 @@ def prioridadeValida(pri):
     else:
       return False 
 """
+"""
 import string
 letras = list(string.ascii_lowercase)
 print (letras)
@@ -115,7 +116,7 @@ for i in letras:
 """
 
 
-
+#Camila Pitanga
 
 
 
