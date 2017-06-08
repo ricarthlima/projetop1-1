@@ -1,0 +1,5 @@
+Ir no donwloads e botão direito do mouse git bash here: 
+git add testes.py(nome do arquivo/extensão)
+git commit -m "descrição da alteração"
+git push origin master
+Depois só ir no site e att
