@@ -28,7 +28,7 @@ def printCores(texto, cor) :
   print(cor + texto + RESET)
   
 
-# Adiciona um compromisso aa agenda. Um compromisso tem no minimo
+# Adiciona um compromisso a agenda. Um compromisso tem no minimo
 # uma descrição. Adicionalmente, pode ter, em caráter opcional, uma
 # data (formato DDMMAAAA), um horário (formato HHMM), uma prioridade de A a Z, 
 # um contexto onde a atividade será realizada (precedido pelo caractere
@@ -43,9 +43,29 @@ def printCores(texto, cor) :
 def adicionar(descricao, extras):
 
   # não é possível adicionar uma atividade que não possui descrição. 
-  if descricao  == '' :
+  if descricao  == '':
     return False
-  
+  else:
+    novaAtividade = "" 
+    todo = open("todo.txt", "a")
+    if dataValida(extras[0]) == True:
+      novaAtividade = novaAtividade + extras[0] + " "
+    if horaValida(extras[1]) == True:
+      novaAtividade = novaAtividade + extras[1] + " "
+    if prioridadeValida(extras[2]) == True:
+      novaAtividade = novaAtividade + extras[2] + " "
+    if descricao != '':
+      novaAtividade = novaAtividade + descricao + " "
+    if contextoValido(extras[3]) == True:
+      novaAtividade = novaAtividade + extras[3] + " "
+    if projetoValido(extras[4]) == True:
+      novaAtividade = novaAtividade + extras[4]
+    #novaAtividade = novaAtividade + extras[0] + " " + extras[1] + " " + extras[2] + " " + descricao + " " + extras[3] + " " + extras[4]
+    """novaAtividade = novaAtividade + descricao + " "
+    for i in extras:
+      novaAtividade = novaAtividade + i + " " """
+    #print(novaAtividade)
+    todo.close()
 
   ################ COMPLETAR
 
@@ -127,8 +147,8 @@ def dataValida(data):
       if int(mes) == 2:                         #no parametro, logo em seguida verificando se os dias estão correspondentes aos meses, 
         if int(dias) >= 1 and int(dias) <= 29:  #no caso fevereiro até 29, alguns meses até 30 e outros até 31, se tudo estiver correto
           return True                           #Devolve TRUE, caso não devolve False
-        else:                      
-          return False
+        else:                                   #Obs: Ao coverter o mes em int, ele tira o 0 antes do numero, ex:int(03) devolve 3.
+          return False                          
       if int(mes) == 1 or int(mes) == 3 or int(mes) == 5 or int(mes) == 7 or int(mes) == 8 or int(mes) == 10 or int(mes) == 12:
         if int(dias) >= 1 and int(dias) <= 31:
           return True
@@ -188,20 +208,70 @@ def soDigitos(numero) :
 # Todos os itens menos DESC são opcionais. Se qualquer um deles estiver fora do formato, por exemplo,
 # data que não tem todos os componentes ou prioridade com mais de um caractere (além dos parênteses),
 # tudo que vier depois será considerado parte da descrição.  
-def organizar(linhas):
-  itens = []
 
-  for l in linhas:
-    data = '' 
+todo = open("todo.txt", "r")                #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
+arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
+linhas = arquivo.splitlines()                 #um elemento da mesma 
+#print("LINHAS", linhas)                         
+todo.close()                                  
+def organizar(linhas):                        #Usando a função organizar, a mesma recebe essa lista de linhas
+                                              #Depois percorre essa lista, e trata cada indice retirando espaços em branco e "\n"
+  itens = []                                  #no inicio e final das frases, e depois separa cada frase em uma lista de palavras
+                                              #na váriavel tokens, depois roda vários "for's" nessa var em busca de analisar    
+  for l in linhas:                            #se existem datas, horas, prioridades, contextos, projetos e descrições no parametro                                  
+    check = False                             #utlizando as funções de validação anteriormente criadas
+    check2 = False
+    data = ''                                 
     hora = ''
     pri = ''
     desc = ''
     contexto = ''
     projeto = ''
   
-    l = l.strip() # remove espaços em branco e quebras de linha do começo e do fim
-    tokens = l.split() # quebra o string em palavras
+    l = l.strip() 
+    tokens = l.split() 
+    
+    for i in tokens:              #For para verificação se as funções de validação são satisfeitas
+      if soDigitos(i) == True:    #adicionando a variável correspondente esses dados, e depois removendo o que fica, e 
+        if data == '':
+          if dataValida(i) == True: #assim sucessivamente para as demais funções
+            data = data + i                 #Em seguida adiciona a lista itens a tupla com essas informações devidamente
+            check = True                    #organizadas
+            tokens.remove(i)                
+              
+    for i in tokens:
+      if soDigitos(i) == True:
+        if hora == '':
+          if check == True:
+            if horaValida(i) == True:
+              hora = hora + i
+              check2 = True
+              tokens.remove(i)
+ 
+    for i in tokens:
+      if check == True:
+        if check2 == True:
+          if prioridadeValida(i) == True:
+            pri = pri + i
+            tokens.remove(i) 
 
+    for i in tokens:
+      if contextoValido(i) == True:
+        contexto = contexto + i
+        tokens.remove(i)
+
+    for i in tokens:
+      if projetoValido(i) == True:
+        projeto = projeto + i
+        tokens.remove(i)
+
+    for i in tokens:
+      desc = desc + i + " "
+    desc = desc.strip()  
+        
+    #print(tokens) 
+
+        
     # Processa os tokens um a um, verificando se são as partes da atividade.
     # Por exemplo, se o primeiro token é uma data válida, deve ser guardado
     # na variável data e posteriormente removido a lista de tokens. Feito isso,
@@ -214,7 +284,6 @@ def organizar(linhas):
     ################ COMPLETAR
 
     itens.append((desc, (data, hora, pri, contexto, projeto)))
-
   return itens
 
 
@@ -225,13 +294,22 @@ def organizar(linhas):
 # (ii) atividades a ser realizadas em certo contexto; (iii) atividades associadas com
 # determinado projeto; (vi) atividades de determinado dia (data específica, hoje ou amanhã). Isso não
 # é uma das tarefas básicas do projeto, porém. 
-def listar():
-
+def listar():                     #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
+  todo = open("todo.txt", "r")    #adiciona a variável listastr esse variavel com o arquivo lido e dá um splitlines
+  arquivo = todo.read()           #separando o mesmo, depois usa a função organizar como parametro listastr  
+  listastr = arquivo.splitlines()
+  #print(listastr)
+  organizar(listastr)
+  todo.close()
   ################ COMPLETAR
   return 
 
 def ordenarPorDataHora(itens):
-
+  for i in itens:
+    print("aqui a hora:", i[1][1])
+    print("aqui a data:", i[1][0])
+    if i[1][1] < i + 1[1][1]:
+      listaw.append(i)#estilo buuble sort
   ################ COMPLETAR
 
   return itens
@@ -311,3 +389,4 @@ def processarComandos(comandos) :
 #
 # ['agenda.py', 'a', 'Mudar', 'de', 'nome']
 processarComandos(sys.argv)
+
