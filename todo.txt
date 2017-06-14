@@ -1,21 +1,6 @@
-(a) Terminar projeto de P1 +IF968 
-Procastinar menos
-(a) Terminar trabalho final de ISI +ISI
-(a) Pesquisar sobre os artigos +ISI
-(b) Estudar Integrais +ma026
-(b) Ver metodo de substituição +ma026
-(c) Estudar indução para MD +MD
-(b) Estudar recursão +IF968 
-2300 Dormir cedo @casa
-10062017 1100 (b) Pegar livro de calculo @bibliotecactg +ma026
-Reunião com grupo Equipe One @grad
-10062017 Ir para casa @Timbauba
-1007201 Fazer algo produtivo 
-08062017 Amistoso do time de futsal do cin @quadraNefd
-Comer menos açucar
-(a) Ler artigos +ISI
-Falar com parentes argentinos @whatsapp
-11062017 2130 Falar com mainha @whatsapp
-Começar a fazer exercicio físico pela manhã
-
- 
+20052017 0900 (b) Pegar livro de calculo @bibliotecactg +ma026
+21052017 2300 (a) Ir para casa @Timbauba
+12052019 2100 Fazer algo produtivo
+12052017 2200 (d) Fazer algo hoje
+22052017 2100 (b) Amistoso do time de futsal do cin @quadraNefd
+23052017 1900 (a) Ir no cin amanhã

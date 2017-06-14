@@ -42,13 +42,13 @@ def printCores(texto, cor) :
 # deve ser levado em consideração. 
 def adicionar(descricao, extras):
 
-  # não é possível adicionar uma atividade que não possui descrição. 
-  if descricao  == '':
-    return False
-  else:
-    novaAtividade = "" 
-    todo = open("todo.txt", "a")
-    if dataValida(extras[0]) == True:
+   
+  if descricao  == '':                                              #Caso não houver uma descrição, a função não será utilizada,
+    return False                                                    #Se houver uma descrição uma variável receberá a nova atividade
+  else:                                                             #o arquivo é aberto no modo a, para não sobrescrever, e são 
+    novaAtividade = ""                                              #feitas as verificaçãoes de validação para as partes das tarefas
+    todo = open("todo.txt", "a")                                    #e posteriormente adicionadas a varaivél novaAtividade se forem
+    if dataValida(extras[0]) == True:                               #validadas
       novaAtividade = novaAtividade + extras[0] + " "
     if horaValida(extras[1]) == True:
       novaAtividade = novaAtividade + extras[1] + " "
@@ -60,11 +60,6 @@ def adicionar(descricao, extras):
       novaAtividade = novaAtividade + extras[3] + " "
     if projetoValido(extras[4]) == True:
       novaAtividade = novaAtividade + extras[4]
-    #novaAtividade = novaAtividade + extras[0] + " " + extras[1] + " " + extras[2] + " " + descricao + " " + extras[3] + " " + extras[4]
-    """novaAtividade = novaAtividade + descricao + " "
-    for i in extras:
-      novaAtividade = novaAtividade + i + " " """
-    #print(novaAtividade)
     todo.close()
 
   ################ COMPLETAR
@@ -209,19 +204,19 @@ def soDigitos(numero) :
 # data que não tem todos os componentes ou prioridade com mais de um caractere (além dos parênteses),
 # tudo que vier depois será considerado parte da descrição.  
 
-todo = open("todo.txt", "r")                #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
+todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
 arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
-linhas = arquivo.splitlines()                 #um elemento da mesma 
-#print("LINHAS", linhas)                         
-todo.close()                                  
+linhas = arquivo.splitlines()                #um elemento da mesma                          
+todo.close()
+#lista = organizar(linhas)
 def organizar(linhas):                        #Usando a função organizar, a mesma recebe essa lista de linhas
                                               #Depois percorre essa lista, e trata cada indice retirando espaços em branco e "\n"
   itens = []                                  #no inicio e final das frases, e depois separa cada frase em uma lista de palavras
                                               #na váriavel tokens, depois roda vários "for's" nessa var em busca de analisar    
   for l in linhas:                            #se existem datas, horas, prioridades, contextos, projetos e descrições no parametro                                  
-    check = False                             #utlizando as funções de validação anteriormente criadas
-    check2 = False
-    data = ''                                 
+    check = False                             #utlizando as funções de validação anteriormente criadas, e também tratando de 
+    check2 = False                            #jogar as partes das tarefas para a descrição caso as anteriores falhem na validação
+    data = ''                                 #usando as variáveis booleanas check e check2    
     hora = ''
     pri = ''
     desc = ''
@@ -231,12 +226,12 @@ def organizar(linhas):                        #Usando a função organizar, a me
     l = l.strip() 
     tokens = l.split() 
     
-    for i in tokens:              #For para verificação se as funções de validação são satisfeitas
-      if soDigitos(i) == True:    #adicionando a variável correspondente esses dados, e depois removendo o que fica, e 
-        if data == '':
-          if dataValida(i) == True: #assim sucessivamente para as demais funções
-            data = data + i                 #Em seguida adiciona a lista itens a tupla com essas informações devidamente
-            check = True                    #organizadas
+    for i in tokens:                          #For para verificação se as funções de validação são satisfeitas
+      if soDigitos(i) == True:                #adicionando a variável correspondente esses dados, e depois removendo o que fica, e 
+        if data == '':                        #assim sucessivamente para as demais funções
+          if dataValida(i) == True:           #Em seguida adiciona a lista itens a tupla com essas informações devidamente
+            data = data + i                   #organizadas
+            check = True                      
             tokens.remove(i)                
               
     for i in tokens:
@@ -267,9 +262,7 @@ def organizar(linhas):                        #Usando a função organizar, a me
 
     for i in tokens:
       desc = desc + i + " "
-    desc = desc.strip()  
-        
-    #print(tokens) 
+    desc = desc.strip()   
 
         
     # Processa os tokens um a um, verificando se são as partes da atividade.
@@ -294,28 +287,105 @@ def organizar(linhas):                        #Usando a função organizar, a me
 # (ii) atividades a ser realizadas em certo contexto; (iii) atividades associadas com
 # determinado projeto; (vi) atividades de determinado dia (data específica, hoje ou amanhã). Isso não
 # é uma das tarefas básicas do projeto, porém. 
-def listar():                     #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
-  todo = open("todo.txt", "r")    #adiciona a variável listastr esse variavel com o arquivo lido e dá um splitlines
-  arquivo = todo.read()           #separando o mesmo, depois usa a função organizar como parametro listastr  
-  listastr = arquivo.splitlines()
-  #print(listastr)
-  organizar(listastr)
+def listar():                     
+  todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
+  arquivo = todo.read()           #adiciona a variável listastr essa variavel com o arquivo lido e dá um splitlines
+  listastr = arquivo.splitlines() #separando o mesmo, depois usa a função organizar com o parametro listastr
+  itens = organizar(listastr)
   todo.close()
-  ################ COMPLETAR
-  return 
+  listagem = ordenarPorDataHora(itens)
+  ordenacao = ordenarPorPrioridade(listagem)
+  for i in range(0,len(ordenacao)):
+    print(str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+  return
 
-def ordenarPorDataHora(itens):
-  for i in itens:
-    print("aqui a hora:", i[1][1])
-    print("aqui a data:", i[1][0])
-    if i[1][1] < i + 1[1][1]:
-      listaw.append(i)#estilo buuble sort
-  ################ COMPLETAR
+def checardata(itens):           #Função que faz a checagem da data, se a data de cada tupla for um str vazio,
+  listaaux = []                  #adiciona essa tupla para a lista auxiliar, e remove essa tupla de da lista geral(itens)     
+  i = 0                          #Depois de rodar toda a lista itens, a variavél po(ponto ótimo) recebe o tamanho da lista 
+  while i < len(itens):          #com os que não tem data removidos, e no final a lista itens vai receber ela mesma 
+    if itens[i][1][0] == "":     #mais a listaaux com as tuplas que não tem data, assim movendo as tuplas sem datas 
+      listaaux.append(itens[i])  #pro final, e devolvendo a lista de itens e o po para ser usado na função 
+      itens.pop(i)               #OrdenarPorDataHora
+      i = i - 1   
+    i = i + 1
+  po = len(itens)
+  itens = itens + listaaux  
+  return (itens,po)
+
+
+
+def ordenarHora(itens):          #Usa o bubble sort para ordenar as tuplas por hora caso as datas das tarefas sejam iguais 
+  #print("ITENS ANTERIOR:", itens)
+  for i in range(0,len(itens)):
+    for x in range(0,len(itens) - 1):
+      if int(itens[i][1][0][4:] + itens[i][1][0][2:4] + itens[i][1][0][0:2]) == int(itens[x][1][0][4:] + itens[x][1][0][2:4] + itens[x][1][0][0:2]):
+        if (itens[i][1][1] == "" and  itens[x][1][1] != "") or (itens[i][1][1] < itens[x][1][1]):
+          #print("OK!")
+          #print(itens[i])
+          #print(itens[x])
+          itenstmp = itens[x]    #Se as datas do anterior e do próximo são iguais , 
+          itens[x] = itens[i]    #se a hora do anterior é str vazio e do posterior não é ou se o anterior é menor que o posterior, inverte eles de 
+          itens[i] = itenstmp    #posição que o bubble sorte devolve esses itens ordenados
+  return itens     
+
+def ordenarPorDataHora(itens):      #A função principal para a ordenação pro data e hora, utiliza primeiro a função checar data
+  tuplaaux = checardata(itens[:])   #adiconando a var tuplaaux a devolução de checagem da data com uma copia de itens(segurança)
+  itens = tuplaaux[0]               #e adiciona a itens o valor da primeira devolução de checardata e a po a segunda devolução 
+  po = tuplaaux[1]
+  
+  for i in range(0, po):            #depois utiliza o bubble sort para organizar essas tuplas de acordo com suas datas utilizando a visão de 
+    for x in range(0, po - 1):      #que ao inverter essas datas para AAAAMMDD elas podem ser comparadas entre maior e menor
+      if int(itens[i][1][0][4:] + itens[i][1][0][2:4] + itens[i][1][0][0:2]) < int(itens[x][1][0][4:] + itens[x][1][0][2:4] + itens[x][1][0][0:2]):
+        itenstmp = itens[x]
+        itens[x] = itens[i]
+        itens[i] = itenstmp  
+  #if int(itens[i][1][0][4:] + itens[i][1][0][2:4] + itens[i][1][0][0:2]) == int(itens[x][1][0][4:] + itens[x][1][0][2:4] + itens[x][1][0][0:2]):
+  itens = ordenarHora(itens[:po]) + itens[po:]    #Depois utiliza a função ordenarHora para fazer essa ordenação se datas são iguais
+                                                  #dando como parametro os itens do começo até o po(qeu são as que tem data)  
+                                                  #concatenado com os itens do po até o final e dps adicionando isso a itens
+
+
+################ COMPLETAR
 
   return itens
    
-def ordenarPorPrioridade(itens):
+def checarprioridade(itens):
+  priaux = []
+  i = 0
+  while i < len(itens):
+    if itens[i][1][2] == "":
+      priaux.append(itens[i])
+      itens.pop(i)
+      i = i - 1
+    i = i + 1
+  po = len(itens)
+  itens = itens + priaux
+  return (itens, po)
 
+def checapriiguais(itens):
+  for i in range(0,len(itens)):
+    for x in range(0,len(itens) - 1):
+      if itens[i][1][2] == itens[x][1][2]:
+        #print(itens[i][1][2])
+        #print(itens[x][1][2])
+        ordenarPorDataHora(itens)
+  return itens  
+
+
+itens = ordenarPorDataHora(organizar(linhas))
+def ordenarPorPrioridade(itens):
+  tuplaaux = checarprioridade(itens[:])
+  itens = tuplaaux[0]
+  po = tuplaaux[1]
+  for i in range(0, po):
+    for x in range(0, po - 1):
+      if itens[i][1][2] < itens[x][1][2]:
+        itenstmp = itens[x]
+        itens[x] = itens[i]
+        itens[i] = itenstmp
+  itens = checapriiguais(itens)      
+  #for w in itens:
+    #itens = itens[]
   ################ COMPLETAR
 
   return itens
@@ -357,7 +427,8 @@ def processarComandos(comandos) :
     # itemParaAdicionar = (descricao, (prioridade, data, hora, contexto, projeto))
     adicionar(itemParaAdicionar[0], itemParaAdicionar[1]) # novos itens não têm prioridade
   elif comandos[1] == LISTAR:
-    return    
+    listagem = listar()
+    return listagem    
     ################ COMPLETAR
 
   elif comandos[1] == REMOVER:
@@ -390,3 +461,13 @@ def processarComandos(comandos) :
 # ['agenda.py', 'a', 'Mudar', 'de', 'nome']
 processarComandos(sys.argv)
 
+#OK
+"""  10052018 1200 (d) Fazer algo amanhã @cin
+10052018 1100 (c) Pegar livro de calculo @bibliotecactg +ma026
+20052017 2100 (b) Ir para casa @Timbauba
+10072017 Fazer algo produtivo
+21052017 2300 (a) Fazer algo hoje
+10072017 2100 (d) Amistoso do time de futsal do cin @quadraNefd
+22052017 1100 (b) Amistoso do time de futsal do cin @quadraNefd
+1100 Ir pra casa
+0900 Ir a praia         """
