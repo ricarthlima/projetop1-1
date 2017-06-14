@@ -204,10 +204,10 @@ def soDigitos(numero) :
 # data que não tem todos os componentes ou prioridade com mais de um caractere (além dos parênteses),
 # tudo que vier depois será considerado parte da descrição.  
 
-todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
+"""todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
 arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
 linhas = arquivo.splitlines()                #um elemento da mesma                          
-todo.close()
+todo.close()"""
 #lista = organizar(linhas)
 def organizar(linhas):                        #Usando a função organizar, a mesma recebe essa lista de linhas
                                               #Depois percorre essa lista, e trata cada indice retirando espaços em branco e "\n"
@@ -296,7 +296,17 @@ def listar():
   listagem = ordenarPorDataHora(itens)
   ordenacao = ordenarPorPrioridade(listagem)
   for i in range(0,len(ordenacao)):
-    print(str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+    if ordenacao[i][1][2] == "(a)":
+      print(YELLOW + BOLD + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+    elif ordenacao[i][1][2] == "(b)":
+      print(RED + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+    elif ordenacao[i][1][2] == "(c)":
+      print(BLUE + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+    elif ordenacao[i][1][2] == "(d)":
+      print(CYAN + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+    else:
+      print(RESET + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
+      
   return
 
 def checardata(itens):           #Função que faz a checagem da data, se a data de cada tupla for um str vazio,
@@ -372,7 +382,7 @@ def checapriiguais(itens):
   return itens  
 
 
-itens = ordenarPorDataHora(organizar(linhas))
+#itens = ordenarPorDataHora(organizar(linhas))
 def ordenarPorPrioridade(itens):
   tuplaaux = checarprioridade(itens[:])
   itens = tuplaaux[0]
