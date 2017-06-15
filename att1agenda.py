@@ -74,7 +74,7 @@ def adicionar(descricao, extras):
     print("Não foi possível escrever para o arquivo " + TODO_FILE)
     print(err)
     return False
-
+  
   return True
 
 
@@ -204,10 +204,10 @@ def soDigitos(numero) :
 # data que não tem todos os componentes ou prioridade com mais de um caractere (além dos parênteses),
 # tudo que vier depois será considerado parte da descrição.  
 
-"""todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
+todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
 arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
 linhas = arquivo.splitlines()                #um elemento da mesma                          
-todo.close()"""
+todo.close()
 #lista = organizar(linhas)
 def organizar(linhas):                        #Usando a função organizar, a mesma recebe essa lista de linhas
                                               #Depois percorre essa lista, e trata cada indice retirando espaços em branco e "\n"
@@ -230,39 +230,49 @@ def organizar(linhas):                        #Usando a função organizar, a me
       if soDigitos(i) == True:                #adicionando a variável correspondente esses dados, e depois removendo o que fica, e 
         if data == '':                        #assim sucessivamente para as demais funções
           if dataValida(i) == True:           #Em seguida adiciona a lista itens a tupla com essas informações devidamente
-            data = data + i                   #organizadas
-            check = True                      
+            data = data + i                   #organizadas                      
             tokens.remove(i)                
-              
+            check = True  
     for i in tokens:
       if soDigitos(i) == True:
         if hora == '':
-          if check == True:
+          if data == '' or check == True:
             if horaValida(i) == True:
-              hora = hora + i
               check2 = True
+              hora = hora + i
               tokens.remove(i)
  
     for i in tokens:
-      if check == True:
-        if check2 == True:
-          if prioridadeValida(i) == True:
-            pri = pri + i
-            tokens.remove(i) 
+      if (hora == '' or check2 == True) or data == '':
+        if prioridadeValida(i) == True:
+          pri = pri + i
+          tokens.remove(i) 
 
     for i in tokens:
       if contextoValido(i) == True:
-        contexto = contexto + i
-        tokens.remove(i)
+        if contexto == '':
+          contexto = contexto + i
+          tokens.remove(i)
 
     for i in tokens:
       if projetoValido(i) == True:
-        projeto = projeto + i
-        tokens.remove(i)
+        if projeto == '': 
+          projeto = projeto + i
+          tokens.remove(i)
 
     for i in tokens:
+      if contextoValido(i) == True:
+        if contexto != '':
+          tokens.remove(i)
+
+    for i in tokens:
+      if projetoValido(i) == True:
+        if projeto != '':
+          tokens.remove(i)
+  
+    for i in tokens:
       desc = desc + i + " "
-    desc = desc.strip()   
+    desc = desc.strip()
 
         
     # Processa os tokens um a um, verificando se são as partes da atividade.
@@ -287,7 +297,7 @@ def organizar(linhas):                        #Usando a função organizar, a me
 # (ii) atividades a ser realizadas em certo contexto; (iii) atividades associadas com
 # determinado projeto; (vi) atividades de determinado dia (data específica, hoje ou amanhã). Isso não
 # é uma das tarefas básicas do projeto, porém. 
-def listar():                     
+def listar():
   todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
   arquivo = todo.read()           #adiciona a variável listastr essa variavel com o arquivo lido e dá um splitlines
   listastr = arquivo.splitlines() #separando o mesmo, depois usa a função organizar com o parametro listastr
@@ -295,18 +305,19 @@ def listar():
   todo.close()
   listagem = ordenarPorDataHora(itens)
   ordenacao = ordenarPorPrioridade(listagem)
-  for i in range(0,len(ordenacao)):
-    if ordenacao[i][1][2] == "(a)":
-      print(YELLOW + BOLD + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
-    elif ordenacao[i][1][2] == "(b)":
-      print(RED + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
-    elif ordenacao[i][1][2] == "(c)":
-      print(BLUE + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
-    elif ordenacao[i][1][2] == "(d)":
-      print(CYAN + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
-    else:
-      print(RESET + str(i + 1) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4])
-      
+  i = 0
+  while i < len(ordenacao):
+    if ordenacao[i][1][2] == "(a)" or ordenacao[i][1][2] == "(A)":
+      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), YELLOW)
+    if ordenacao[i][1][2] == "(b)" or ordenacao[i][1][2] == "(B)":
+      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(c)" or ordenacao[i][1][2] == "(C)":
+      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " "  +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), BLUE)
+    if ordenacao[i][1][2] == "(d)" or ordenacao[i][1][2] == "(D)":
+      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), CYAN)
+    if ordenacao[i][1][2] == '':
+      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RESET)
+    i = i + 1     
   return
 
 def checardata(itens):           #Função que faz a checagem da data, se a data de cada tupla for um str vazio,
@@ -354,9 +365,6 @@ def ordenarPorDataHora(itens):      #A função principal para a ordenação pro
                                                   #dando como parametro os itens do começo até o po(qeu são as que tem data)  
                                                   #concatenado com os itens do po até o final e dps adicionando isso a itens
 
-
-################ COMPLETAR
-
   return itens
    
 def checarprioridade(itens):
@@ -394,10 +402,6 @@ def ordenarPorPrioridade(itens):
         itens[x] = itens[i]
         itens[i] = itenstmp
   itens = checapriiguais(itens)      
-  #for w in itens:
-    #itens = itens[]
-  ################ COMPLETAR
-
   return itens
 
 def fazer(num):
