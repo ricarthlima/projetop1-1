@@ -308,16 +308,24 @@ def listar():
   #print(ordenacao)
   i = 0
   while i < len(ordenacao):
+    saida = ""
+    if ordenacao[i][1][0] != '':
+      a = ordenacao[i][1][0]
+      saida = saida + a[0]+a[1]+"/"+a[2]+a[3]+"/"+a[4]+a[5]+a[6]+a[7] + " "
+    if ordenacao[i][1][1] != '':
+      h = ordenacao[i][1][1]
+      saida = saida + h[0]+h[1]+"h"+h[2]+h[3]+"m"
+      
     if ordenacao[i][1][2] == "(a)" or ordenacao[i][1][2] == "(A)":
-      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), YELLOW)
+      printCores(str(str(i) + " " + saida +  " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), YELLOW)
     if ordenacao[i][1][2] == "(b)" or ordenacao[i][1][2] == "(B)":
-      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
     if ordenacao[i][1][2] == "(c)" or ordenacao[i][1][2] == "(C)":
-      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " "  +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), BLUE)
+      printCores(str(str(i) + " " + saida + " "  +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), BLUE)
     if ordenacao[i][1][2] == "(d)" or ordenacao[i][1][2] == "(D)":
-      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), CYAN)
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), CYAN)
     if ordenacao[i][1][2] == '':
-      printCores(str(str(i) + " " + ordenacao[i][1][0] + " " + ordenacao[i][1][1] + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RESET)
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RESET)
     i = i + 1     
   return
 
