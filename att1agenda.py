@@ -422,21 +422,20 @@ def remover(numero):
     ordenacao.pop(int(numero))
     todo = open("todo.txt", "w") 
     for i in ordenacao:
-      print(i[1][0])
       tarefa = ""
-      """if dataValida(i[1][0]) == True:
+      if dataValida(i[1][0]) == True:
         tarefa = tarefa + " " + i[1][0]
       if horaValida(i[1][1]) == True:
         tarefa = tarefa + " " + i[1][1]
       if prioridadeValida(i[1][2]) == True:
         tarefa = tarefa + " " + i[1][2]
-      if ordenacao[i][0] != '':
+      if i[0] != '':
         tarefa = tarefa + " " + i[0]
       if contextoValido(i[1][3]) == True:
         tarefa = tarefa + " " + i[1][3]
       if projetoValido(i[1][4]) == True:
         tarefa = tarefa + " " + i[1][4]
-      todo.write(tarefa)"""
+      todo.write(tarefa  + "\n")
     print(ordenacao)
     print("ok")
     todo.close()
