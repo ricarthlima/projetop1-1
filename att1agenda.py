@@ -410,9 +410,44 @@ def fazer(num):
 
   return 
 
-def remover():
-
-  ################ COMPLETAR
+def remover(numero):
+  todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
+  arquivo = todo.read()           #adiciona a variável listastr essa variavel com o arquivo lido e dá um splitlines
+  listastr = arquivo.splitlines() #separando o mesmo, depois usa a função organizar com o parametro listastr
+  itens = organizar(listastr)
+  todo.close()
+  listagem = ordenarPorDataHora(itens)
+  ordenacao = ordenarPorPrioridade(listagem)
+  if int(numero) <= len(ordenacao) - 1:
+    ordenacao.pop(int(numero))
+    todo = open("todo.txt", "w") 
+    for i in ordenacao:
+      print(i[1][0])
+      tarefa = ""
+      """if dataValida(i[1][0]) == True:
+        tarefa = tarefa + " " + i[1][0]
+      if horaValida(i[1][1]) == True:
+        tarefa = tarefa + " " + i[1][1]
+      if prioridadeValida(i[1][2]) == True:
+        tarefa = tarefa + " " + i[1][2]
+      if ordenacao[i][0] != '':
+        tarefa = tarefa + " " + i[0]
+      if contextoValido(i[1][3]) == True:
+        tarefa = tarefa + " " + i[1][3]
+      if projetoValido(i[1][4]) == True:
+        tarefa = tarefa + " " + i[1][4]
+      todo.write(tarefa)"""
+    print(ordenacao)
+    print("ok")
+    todo.close()
+  
+  
+  
+  
+  
+  
+  else:
+    print("Número de tarefa não encontrado!")
 
   return
 
@@ -446,7 +481,10 @@ def processarComandos(comandos) :
     ################ COMPLETAR
 
   elif comandos[1] == REMOVER:
-    return    
+    if soDigitos(comandos[2]) == True:
+      remover(comandos[2])
+    
+    return     
 
     ################ COMPLETAR    
 
