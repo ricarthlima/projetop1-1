@@ -52,7 +52,7 @@ def adicionar(descricao, extras):
       novaAtividade = novaAtividade + extras[0] + " "
     if horaValida(extras[1]) == True:
       novaAtividade = novaAtividade + extras[1] + " "
-    if prioridadeValida(extras[2]) == True:
+    if prioridadeValida(extras[2].upper()) == True:
       novaAtividade = novaAtividade + extras[2] + " "
     if descricao != '':
       novaAtividade = novaAtividade + descricao + " "
@@ -305,6 +305,7 @@ def listar():
   todo.close()
   listagem = ordenarPorDataHora(itens)
   ordenacao = ordenarPorPrioridade(listagem)
+  #print(ordenacao)
   i = 0
   while i < len(ordenacao):
     if ordenacao[i][1][2] == "(a)" or ordenacao[i][1][2] == "(A)":
@@ -405,8 +406,49 @@ def ordenarPorPrioridade(itens):
   return itens
 
 def fazer(num):
+  todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
+  arquivo = todo.read()           #adiciona a variável listastr essa variavel com o arquivo lido e dá um splitlines
+  listastr = arquivo.splitlines() #separando o mesmo, depois usa a função organizar com o parametro listastr
+  itens = organizar(listastr)
+  todo.close()
+  listagem = ordenarPorDataHora(itens)
+  ordenacao = ordenarPorPrioridade(listagem)
+  if int(num) <= len(ordenacao):
+    tarefafeita = ordenacao[int(num)]
+    done = open("done.txt", "a")
+    ftarefa = tarefafeita[1][0] + " " + tarefafeita[1][1] + " " + tarefafeita[1][2] + " " + tarefafeita[0] + " " + tarefafeita[1][3] + " " + tarefafeita[1][4]
+    done.write(ftarefa)
+    done.close()
+    del ordenacao[int(num)]
+    print(ordenacao)
+    todo = open("todo.txt", "w") 
+    for i in ordenacao:
+      tarefa = ""
+      if dataValida(i[1][0]) == True:
+        tarefa = tarefa + " " + i[1][0]
+      if horaValida(i[1][1]) == True:
+        tarefa = tarefa + " " + i[1][1]
+      if prioridadeValida(i[1][2]) == True:
+        tarefa = tarefa + " " + i[1][2]
+      if i[0] != '':
+        tarefa = tarefa + " " + i[0]
+      if contextoValido(i[1][3]) == True:
+        tarefa = tarefa + " " + i[1][3]
+      if projetoValido(i[1][4]) == True:
+        tarefa = tarefa + " " + i[1][4]
+      todo.write(tarefa  + "\n")
+    todo.close()
 
-  ################ COMPLETAR
+  try: 
+    fp = open(ARCHIVE_FILE, 'a')
+    fp.write(ftarefa + "\n")
+    fp.close()
+  except IOError as err:
+    print("Não foi possível escrever para o arquivo " + ARCHIVE_FILE)
+    print(err)
+    return False
+  
+
 
   return 
 
@@ -436,8 +478,8 @@ def remover(numero):
       if projetoValido(i[1][4]) == True:
         tarefa = tarefa + " " + i[1][4]
       todo.write(tarefa  + "\n")
-    print(ordenacao)
-    print("ok")
+    #print(ordenacao)
+    #print("ok")
     todo.close()
   
   
@@ -454,8 +496,41 @@ def remover(numero):
 # num é o número da atividade cuja prioridade se planeja modificar, conforme
 # exibido pelo comando 'l'. 
 def priorizar(num, prioridade):
-
-  ################ COMPLETAR
+  todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
+  arquivo = todo.read()           #adiciona a variável listastr essa variavel com o arquivo lido e dá um splitlines
+  listastr = arquivo.splitlines() #separando o mesmo, depois usa a função organizar com o parametro listastr
+  itens = organizar(listastr)
+  todo.close()
+  listagem = ordenarPorDataHora(itens)
+  ordenacao = ordenarPorPrioridade(listagem)
+  if int(num) <= len(ordenacao) - 1:
+    #print(ordenacao[15][1][2])
+    #print("desc aq", ordenacao[int(num)][0])
+    tupleaux = (ordenacao[int(num)][0], (ordenacao[int(num)][1][0], ordenacao[int(num)][1][1], prioridade.upper() , ordenacao[int(num)][1][3], ordenacao[int(num)][1][4]))
+    ordenacao[int(num)] = tupleaux
+    #print(tupleaux)
+    #print(ordenacao)    
+    todo = open("todo.txt", "w") 
+    for i in ordenacao:
+      tarefa = ""
+      if dataValida(i[1][0]) == True:
+        tarefa = tarefa + " " + i[1][0]
+      if horaValida(i[1][1]) == True:
+        tarefa = tarefa + " " + i[1][1]
+      if prioridadeValida(i[1][2]) == True:
+        tarefa = tarefa + " " + i[1][2]
+      if i[0] != '':
+        tarefa = tarefa + " " + i[0]
+      if contextoValido(i[1][3]) == True:
+        tarefa = tarefa + " " + i[1][3]
+      if projetoValido(i[1][4]) == True:
+        tarefa = tarefa + " " + i[1][4]
+      todo.write(tarefa  + "\n")
+    todo.close()
+  else:
+    print("Número de tarefa não encontrado!")
+  
+  
 
   return 
 
@@ -485,17 +560,20 @@ def processarComandos(comandos) :
     
     return     
 
-    ################ COMPLETAR    
 
   elif comandos[1] == FAZER:
+    if soDigitos(comandos[2]) == True:  
+      fazer(comandos[2])
     return    
 
-    ################ COMPLETAR
+    
 
   elif comandos[1] == PRIORIZAR:
+    if soDigitos(comandos[2]) == True and prioridadeValida("("+ comandos[3] + ")" ) == True:
+      priorizar(comandos[2], "("+ comandos[3] + ")")
     return    
 
-    ################ COMPLETAR
+    
 
   else :
     print("Comando inválido.")
