@@ -47,20 +47,20 @@ def adicionar(descricao, extras):
     return False                                                    #Se houver uma descrição uma variável receberá a nova atividade
   else:                                                             #o arquivo é aberto no modo a, para não sobrescrever, e são 
     novaAtividade = ""                                              #feitas as verificaçãoes de validação para as partes das tarefas
-    todo = open("todo.txt", "a")                                    #e posteriormente adicionadas a varaivél novaAtividade se forem
+    #todo = open("todo.txt", "a")                                    #e posteriormente adicionadas a varaivél novaAtividade se forem
     if dataValida(extras[0]) == True:                               #validadas
       novaAtividade = novaAtividade + extras[0] + " "
     if horaValida(extras[1]) == True:
       novaAtividade = novaAtividade + extras[1] + " "
-    if prioridadeValida(extras[2].upper()) == True:
-      novaAtividade = novaAtividade + extras[2] + " "
+    if prioridadeValida(extras[2]) == True:
+      novaAtividade = novaAtividade + extras[2].upper() + " "
     if descricao != '':
       novaAtividade = novaAtividade + descricao + " "
     if contextoValido(extras[3]) == True:
       novaAtividade = novaAtividade + extras[3] + " "
     if projetoValido(extras[4]) == True:
       novaAtividade = novaAtividade + extras[4]
-    todo.close()
+    #todo.close()
 
   ################ COMPLETAR
 
@@ -204,16 +204,14 @@ def soDigitos(numero) :
 # data que não tem todos os componentes ou prioridade com mais de um caractere (além dos parênteses),
 # tudo que vier depois será considerado parte da descrição.  
 
-
-linhas = ""
-def organizar(linhas):                        
-  todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
-  arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
-  linhas = arquivo.splitlines()                #um elemento da mesma                          
-  todo.close()
-  
-  
-                                              #Usando a função organizar, a mesma recebe essa lista de linhas
+fp = open(TODO_FILE,"a")
+fp.close()
+todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
+arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
+linhas = arquivo.splitlines()                #um elemento da mesma                          
+todo.close()
+#lista = organizar(linhas)
+def organizar(linhas):                        #Usando a função organizar, a mesma recebe essa lista de linhas
                                               #Depois percorre essa lista, e trata cada indice retirando espaços em branco e "\n"
   itens = []                                  #no inicio e final das frases, e depois separa cada frase em uma lista de palavras
                                               #na váriavel tokens, depois roda vários "for's" nessa var em busca de analisar    
@@ -321,65 +319,63 @@ def listar():
       saida = saida + h[0]+h[1]+"h"+h[2]+h[3]+"m"
       
     if ordenacao[i][1][2] == "(a)" or ordenacao[i][1][2] == "(A)":
-      print(BOLD + YELLOW + str(str(i) + " " + saida +  " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]))
+      printCores(str(str(i) + " " + saida +  " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), YELLOW + BOLD)
     if ordenacao[i][1][2] == "(b)" or ordenacao[i][1][2] == "(B)":
-      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), YELLOW)
     if ordenacao[i][1][2] == "(c)" or ordenacao[i][1][2] == "(C)":
       printCores(str(str(i) + " " + saida + " "  +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), BLUE)
     if ordenacao[i][1][2] == "(d)" or ordenacao[i][1][2] == "(D)":
       printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), CYAN)
     if ordenacao[i][1][2] == '':
       printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RESET)
+    if ordenacao[i][1][2] == "(e)" or ordenacao[i][1][2] == "(E)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)  
+    if ordenacao[i][1][2] == "(f)" or ordenacao[i][1][2] == "(F)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)
+    if ordenacao[i][1][2] == "(g)" or ordenacao[i][1][2] == "(G)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)
+    if ordenacao[i][1][2] == "(h)" or ordenacao[i][1][2] == "(H)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)
+    if ordenacao[i][1][2] == "(i)" or ordenacao[i][1][2] == "(I)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)
+    if ordenacao[i][1][2] == "(j)" or ordenacao[i][1][2] == "(J)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)
+    if ordenacao[i][1][2] == "(k)" or ordenacao[i][1][2] == "(K)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), GREEN)
+    if ordenacao[i][1][2] == "(l)" or ordenacao[i][1][2] == "(L)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(m)" or ordenacao[i][1][2] == "(M)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(n)" or ordenacao[i][1][2] == "(N)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(o)" or ordenacao[i][1][2] == "(O)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(p)" or ordenacao[i][1][2] == "(P)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(q)" or ordenacao[i][1][2] == "(Q)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(r)" or ordenacao[i][1][2] == "(R)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(s)" or ordenacao[i][1][2] == "(S)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(t)" or ordenacao[i][1][2] == "(T)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(u)" or ordenacao[i][1][2] == "(U)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(v)" or ordenacao[i][1][2] == "(V)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(w)" or ordenacao[i][1][2] == "(W)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(x)" or ordenacao[i][1][2] == "(X)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(y)" or ordenacao[i][1][2] == "(Y)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    if ordenacao[i][1][2] == "(z)" or ordenacao[i][1][2] == "(Z)":
+      printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
+    
     i = i + 1     
   return
 
-"""def checardata(itens):           #Função que faz a checagem da data, se a data de cada tupla for um str vazio,
-  listaaux = []                  #adiciona essa tupla para a lista auxiliar, e remove essa tupla de da lista geral(itens)     
-  i = 0                          #Depois de rodar toda a lista itens, a variavél po(ponto ótimo) recebe o tamanho da lista 
-  while i < len(itens):          #com os que não tem data removidos, e no final a lista itens vai receber ela mesma 
-    if itens[i][1][0] == "":     #mais a listaaux com as tuplas que não tem data, assim movendo as tuplas sem datas 
-      listaaux.append(itens[i])  #pro final, e devolvendo a lista de itens e o po para ser usado na função 
-      itens.pop(i)               #OrdenarPorDataHora
-      i = i - 1   
-    i = i + 1
-  po = len(itens)
-  itens = itens + listaaux  
-  return (itens,po)
-
-
-
-def ordenarHora(itens):          #Usa o bubble sort para ordenar as tuplas por hora caso as datas das tarefas sejam iguais 
-  #print("ITENS ANTERIOR:", itens)
-  for i in range(0,len(itens)):
-    for x in range(0,len(itens) - 1):
-      if int(itens[i][1][0][4:] + itens[i][1][0][2:4] + itens[i][1][0][0:2]) == int(itens[x][1][0][4:] + itens[x][1][0][2:4] + itens[x][1][0][0:2]):
-        if (itens[i][1][1] == "" and  itens[x][1][1] != "") or (itens[i][1][1] < itens[x][1][1]):
-          #print("OK!")
-          #print(itens[i])
-          #print(itens[x])
-          itenstmp = itens[x]    #Se as datas do anterior e do próximo são iguais , 
-          itens[x] = itens[i]    #se a hora do anterior é str vazio e do posterior não é ou se o anterior é menor que o posterior, inverte eles de 
-          itens[i] = itenstmp    #posição que o bubble sorte devolve esses itens ordenados
-  return itens     
-
-def ordenarPorDataHora(itens):      #A função principal para a ordenação pro data e hora, utiliza primeiro a função checar data
-  tuplaaux = checardata(itens[:])   #adiconando a var tuplaaux a devolução de checagem da data com uma copia de itens(segurança)
-  itens = tuplaaux[0]               #e adiciona a itens o valor da primeira devolução de checardata e a po a segunda devolução 
-  po = tuplaaux[1]
-  
-  for i in range(0, po):            #depois utiliza o bubble sort para organizar essas tuplas de acordo com suas datas utilizando a visão de 
-    for x in range(0, po - 1):      #que ao inverter essas datas para AAAAMMDD elas podem ser comparadas entre maior e menor
-      if int(itens[i][1][0][4:] + itens[i][1][0][2:4] + itens[i][1][0][0:2]) < int(itens[x][1][0][4:] + itens[x][1][0][2:4] + itens[x][1][0][0:2]):
-        itenstmp = itens[x]
-        itens[x] = itens[i]
-        itens[i] = itenstmp  
-  #if int(itens[i][1][0][4:] + itens[i][1][0][2:4] + itens[i][1][0][0:2]) == int(itens[x][1][0][4:] + itens[x][1][0][2:4] + itens[x][1][0][0:2]):
-  itens = ordenarHora(itens[:po]) + itens[po:]    #Depois utiliza a função ordenarHora para fazer essa ordenação se datas são iguais
-                                                  #dando como parametro os itens do começo até o po(qeu são as que tem data)  
-                                                  #concatenado com os itens do po até o final e dps adicionando isso a itens
-
-  return itens"""
-  
 def ordenarPorDataHora(itens):      #A função principal para a ordenação pro data e hora, utiliza primeiro a função checar data
   listaaux = []
   listacomdata = []
@@ -442,6 +438,7 @@ def ordenarPorPrioridade(itens):
         itenstmp = listacompri[x+1]
         listacompri[x+1] = listacompri[x]
         listacompri[x] = itenstmp
+        
   z = 0
   while z < len(listacompri):
     if listacompri[x][1][2] == listacompri[x+1][1][2]:
@@ -453,43 +450,6 @@ def ordenarPorPrioridade(itens):
     #print(x)
 
   return ordefinal  
-
-"""def checarprioridade(itens):
-  priaux = []
-  i = 0
-  while i < len(itens):
-    if itens[i][1][2] == "":
-      priaux.append(itens[i])
-      itens.pop(i)
-      i = i - 1
-    i = i + 1
-  po = len(itens)
-  itens = itens + priaux
-  return (itens, po)
-
-def checapriiguais(itens):
-  for i in range(0,len(itens)):
-    for x in range(0,len(itens) - 1):
-      if itens[i][1][2] == itens[x][1][2]:
-        #print(itens[i][1][2])
-        #print(itens[x][1][2])
-        ordenarPorDataHora(itens)
-  return itens  
-
-
-#itens = ordenarPorDataHora(organizar(linhas))
-def ordenarPorPrioridade(itens):
-  tuplaaux = checarprioridade(itens[:])
-  itens = tuplaaux[0]
-  po = tuplaaux[1]
-  for i in range(0, po):
-    for x in range(0, po - 1):
-      if itens[i][1][2] < itens[x][1][2]:
-        itenstmp = itens[x]
-        itens[x] = itens[i]
-        itens[i] = itenstmp
-  itens = checapriiguais(itens)      
-  return itens"""
 
 def fazer(num):
   todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
@@ -506,7 +466,7 @@ def fazer(num):
     done.write(ftarefa)
     done.close()
     del ordenacao[int(num)]
-    print(ordenacao)
+    #print(ordenacao)
     todo = open("todo.txt", "w") 
     for i in ordenacao:
       tarefa = ""
@@ -527,7 +487,7 @@ def fazer(num):
 
   try: 
     fp = open(ARCHIVE_FILE, 'a')
-    fp.write(ftarefa + "\n")
+    fp.write("" + "\n")
     fp.close()
   except IOError as err:
     print("Não foi possível escrever para o arquivo " + ARCHIVE_FILE)
