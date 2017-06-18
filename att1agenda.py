@@ -204,12 +204,16 @@ def soDigitos(numero) :
 # data que não tem todos os componentes ou prioridade com mais de um caractere (além dos parênteses),
 # tudo que vier depois será considerado parte da descrição.  
 
-todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
-arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
-linhas = arquivo.splitlines()                #um elemento da mesma                          
-todo.close()
-#lista = organizar(linhas)
-def organizar(linhas):                        #Usando a função organizar, a mesma recebe essa lista de linhas
+
+linhas = ""
+def organizar(linhas):                        
+  todo = open("todo.txt", "r")                 #Variavel que abre o arquivo no modo de leitura,depois o adiciona a uma var
+  arquivo = todo.read()                        #Depois a variavel linhas recebe esse arquivo em forma de listas, com cada linha
+  linhas = arquivo.splitlines()                #um elemento da mesma                          
+  todo.close()
+  
+  
+                                              #Usando a função organizar, a mesma recebe essa lista de linhas
                                               #Depois percorre essa lista, e trata cada indice retirando espaços em branco e "\n"
   itens = []                                  #no inicio e final das frases, e depois separa cada frase em uma lista de palavras
                                               #na váriavel tokens, depois roda vários "for's" nessa var em busca de analisar    
@@ -317,7 +321,7 @@ def listar():
       saida = saida + h[0]+h[1]+"h"+h[2]+h[3]+"m"
       
     if ordenacao[i][1][2] == "(a)" or ordenacao[i][1][2] == "(A)":
-      printCores(str(str(i) + " " + saida +  " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), YELLOW)
+      print(BOLD + YELLOW + str(str(i) + " " + saida +  " " + ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]))
     if ordenacao[i][1][2] == "(b)" or ordenacao[i][1][2] == "(B)":
       printCores(str(str(i) + " " + saida + " " +  ordenacao[i][1][2] + " " + ordenacao[i][0] + " " + ordenacao[i][1][3] + " " + ordenacao[i][1][4]), RED)
     if ordenacao[i][1][2] == "(c)" or ordenacao[i][1][2] == "(C)":
@@ -329,7 +333,7 @@ def listar():
     i = i + 1     
   return
 
-def checardata(itens):           #Função que faz a checagem da data, se a data de cada tupla for um str vazio,
+"""def checardata(itens):           #Função que faz a checagem da data, se a data de cada tupla for um str vazio,
   listaaux = []                  #adiciona essa tupla para a lista auxiliar, e remove essa tupla de da lista geral(itens)     
   i = 0                          #Depois de rodar toda a lista itens, a variavél po(ponto ótimo) recebe o tamanho da lista 
   while i < len(itens):          #com os que não tem data removidos, e no final a lista itens vai receber ela mesma 
@@ -374,9 +378,83 @@ def ordenarPorDataHora(itens):      #A função principal para a ordenação pro
                                                   #dando como parametro os itens do começo até o po(qeu são as que tem data)  
                                                   #concatenado com os itens do po até o final e dps adicionando isso a itens
 
-  return itens
-   
-def checarprioridade(itens):
+  return itens"""
+  
+def ordenarPorDataHora(itens):      #A função principal para a ordenação pro data e hora, utiliza primeiro a função checar data
+  listaaux = []
+  listacomdata = []
+  for w in itens:
+    if w[1][0] == "":
+      listaaux.append(w)
+    elif w[1][0] != "":
+      listacomdata.append(w)
+  #print(listaaux)
+  #print(listacomdata)
+
+  for i in range(0,len(listacomdata)):
+    for x in range(0,len(listacomdata)-1):
+      if int(listacomdata[x][1][0][4:] + listacomdata[x][1][0][2:4] + listacomdata[x][1][0][0:2]) > int(listacomdata[x+1][1][0][4:] + listacomdata[x+1][1][0][2:4] + listacomdata[x+1][1][0][0:2]): 
+        itenstmp = listacomdata[x+1]
+        listacomdata[x+1] = listacomdata[x]
+        listacomdata[x] = itenstmp
+  #print(listacomdata)
+  for i in range(0,len(listacomdata)):
+    for x in range(0,len(listacomdata)-1):
+      if int(listacomdata[x][1][0]) == int(listacomdata[x+1][1][0]):
+        if (listacomdata[x][1][1]== '' and listacomdata[x+1][1][1] != ''): #or (int(listacomdata[x][1][1]) > int(listacomdata[x+1][1][1])):
+          itenstmp = listacomdata[x+1]
+          listacomdata[x+1] = listacomdata[x]
+          listacomdata[x] = itenstmp
+  #print("LISTAAUX",listaaux)
+  listasemdataehora = []
+  listacomhora = []
+  for s in listaaux:
+    if s[1][1] == '':
+      listasemdataehora.append(s)
+    elif s[1][1] != '':
+      listacomhora.append(s)
+  for i in range(0,len(listacomhora)):
+    for x in range(0,len(listacomhora)-1):
+      if listacomhora[x][1][1] > listacomhora[x+1][1][1]:
+        itenstmp = listacomhora[x+1]
+        listacomhora[x+1] = listacomhora[x]
+        listacomhora[x] = itenstmp
+  #print("LISTAPORHORA", listacomhora)      
+  semiordenadas = listacomhora + listasemdataehora
+  ordenadas = listacomdata + semiordenadas
+  #for x in ordenadas:
+    #print(x)
+  return ordenadas
+  
+def ordenarPorPrioridade(itens):
+  listasempri = []
+  listacompri = []
+  for i in itens:
+    if i[1][2] == '':
+      listasempri.append(i)
+    elif i[1][2] != '':
+      listacompri.append(i)
+  #print(listacompri)
+  #print(listasempri)
+  for i in range(0,len(listacompri)):
+    for x in range(0,len(listacompri)-1):
+      if listacompri[x][1][2] > listacompri[x+1][1][2]:
+        itenstmp = listacompri[x+1]
+        listacompri[x+1] = listacompri[x]
+        listacompri[x] = itenstmp
+  z = 0
+  while z < len(listacompri):
+    if listacompri[x][1][2] == listacompri[x+1][1][2]:
+      ordenarPorDataHora(listacompri)
+    z = z + 1
+  #print("LISTAORDEPRI",listacompri)
+  ordefinal = listacompri + listasempri
+  #for x in ordefinal:
+    #print(x)
+
+  return ordefinal  
+
+"""def checarprioridade(itens):
   priaux = []
   i = 0
   while i < len(itens):
@@ -411,7 +489,7 @@ def ordenarPorPrioridade(itens):
         itens[x] = itens[i]
         itens[i] = itenstmp
   itens = checapriiguais(itens)      
-  return itens
+  return itens"""
 
 def fazer(num):
   todo = open("todo.txt", "r")    #Pega o arquivo em modo leitura adicionando ele a uma variável, e depois
