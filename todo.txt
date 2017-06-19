@@ -1,6 +1,39 @@
-20052017 0900 (b) Pegar livro de calculo @bibliotecactg +ma026
-21052017 2300 (a) Ir para casa @Timbauba
-12052019 2100 Fazer algo produtivo
-12052017 2200 (d) Fazer algo hoje
-22052017 2100 (b) Amistoso do time de futsal do cin @quadraNefd
-23052017 1900 (a) Ir no cin amanh�
+ 23052017 1030 (A) Reunião com Huguinho, Luizinho e Zezinho. @Skype +Pesquisa
+ 23052017 2300 (A) Ler um livro @casa
+ 23052017 (A) Ler artigo IST. +Serviço
+ 14072017 2330 (A) meu niver @contexto +projeto
+ 14072017 (A) dia do deizotao @casa
+ 0912 (A) Pensar
+ 1600 (A) Sair de Casa
+ (A) Corrigir provas de IF968 +IF968
+ 2130 (B) Chegar em Casa
+ (B) Terminar a especificação do projeto de IF968. +IF968
+ (B) Publicar a especificação do projeto de IF968 terminada. +IF968
+ (B) Revisar artigo IST +Service
+ (B) Revisar artigos SBES +Service
+ (B) Revisar artigos SBES Education +Service
+ (B) Revisar artigos SBLP +Service
+ 2330 (C) Dormir cedo @Casa
+ (C) Revisar artigos SBES Insightful Ideas +Service
+ 14062017 (D) Caetanear o que há de bom
+ (D) Read "Optimizing energy consumption of GUIs in android apps: A multi-objective approach."
+ 14082018 2330 (E) ola gente
+ 0800 (E) Comer
+ 0900 (E) Correr
+ 14062017 2359 Apresentação de ISI @EquipeOne +ISI
+ 16062017 2359 Lista de Cálculo +Calculo
+ 18062017 2359 Entrega do Projeto @Monaliisa +P1
+ 19062017 1700 Apresentação P1 @Monaliisa +P1
+ 20062017 1700 Prova Calculo +Calculo
+ 22062017 1900 Segunda Chamada +Calculo
+ 10052018 1200 (D) Fazer algo amanhã @cin
+ 10052018 1100 (C) Pegar livro de calculo @bibliotecactg +ma026
+ 20052017 2100 (B) Ir para casa @Timbauba
+ 10072017 Fazer algo produtivo
+ 21052017 2300 (A) Fazer algo hoje
+ 10072017 2100 (D) Amistoso do time de futsal do cin @quadraNefd
+ 22052017 1100 (B) Amistoso do time de futsal do cin @quadraNefd
+ 1100 Ir pra casa
+ 0900 Ir a praia
+ andar 
+caminhar 
